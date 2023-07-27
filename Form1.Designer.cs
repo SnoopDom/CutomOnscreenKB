@@ -33,7 +33,7 @@
             this.btnUp = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
-            this.editMacroTimer = new System.Windows.Forms.Timer(this.components);
+            this.longPressTimer = new System.Windows.Forms.Timer(this.components);
             this.macroButtonsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
@@ -77,9 +77,9 @@
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
-            // editMacroTimer
+            // longPressTimer
             // 
-            this.editMacroTimer.Interval = 1000;
+            this.longPressTimer.Tick += new System.EventHandler(this.longPressTimer_Tick_1);
             // 
             // macroButtonsPanel
             // 
@@ -103,6 +103,7 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
 
         }
@@ -113,7 +114,7 @@
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoad;
-        private System.Windows.Forms.Timer editMacroTimer;
+        private System.Windows.Forms.Timer longPressTimer;
         private System.Windows.Forms.FlowLayoutPanel macroButtonsPanel;
     }
 }

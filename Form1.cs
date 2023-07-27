@@ -12,23 +12,21 @@ namespace CutomOnscreenKB
 {
     public partial class Form1 : Form
     {
-        private Timer longPressTimer;
-
+        private int longPressButtonIndex = -1;
 
         public Form1()
         {
-            InitializeComponent();        
+            InitializeComponent();
+
+            longPressTimer.Interval = 1000; // 1 second for long press
+            longPressTimer.Tick += LongPressTimer_Tick;
         }
 
-        // Initialize the Timer and its properties in the Form_Load event.
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form1_Load_1(object sender, EventArgs e)
         {
-            int initialMacroCount = 4;
+            int initialMacroCount = 5;
             AddMacroButtons(initialMacroCount);
 
-            longPressTimer = new Timer();
-            longPressTimer.Interval = 1000; // 1 second for long press
-//            longPressTimer.Tick += LongPressTimer_Tick;
         }
 
         private void AddMacroButtons(int count)
@@ -43,6 +41,8 @@ namespace CutomOnscreenKB
                 macroButton.Text = "Macro " + (i + 1);
                 macroButton.Tag = i; // Store the macro index in the Tag property for later reference
                 macroButton.Click += MacroButton_Click; // Attach the click event handler
+                macroButton.MouseDown += MacroButton_MouseDown; // Attach the MouseDown event handler
+                macroButton.MouseUp += MacroButton_MouseUp; // Attach the MouseUp event handler
                 macroButtonsPanel.Controls.Add(macroButton);
             }
         }
@@ -50,10 +50,10 @@ namespace CutomOnscreenKB
         // Event handler for the macro buttons' Click event
         private void MacroButton_Click(object sender, EventArgs e)
         {
+            // This event will only handle single-click action, not long-press
             Button clickedButton = (Button)sender;
             int macroIndex = (int)clickedButton.Tag;
-            MacroEditorForm editorForm = new MacroEditorForm(macroIndex);
-            editorForm.ShowDialog();
+            // Handle the single-click action here (if needed)
         }
 
         private void btnDown_Click(object sender, EventArgs e)
@@ -109,5 +109,37 @@ namespace CutomOnscreenKB
         {
 
         }
+        private void MacroButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            longPressButtonIndex = (int)((Button)sender).Tag;
+            longPressTimer.Start();
+        }
+
+        private void MacroButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            longPressTimer.Stop();
+            longPressButtonIndex = -1;
+        }
+
+        private void LongPressTimer_Tick(object sender, EventArgs e)
+        {
+            longPressTimer.Stop();
+
+            if (longPressButtonIndex >= 0 && longPressButtonIndex < macroButtonsPanel.Controls.Count)
+            {
+                int macroIndex = longPressButtonIndex;
+                MacroEditorForm editorForm = new MacroEditorForm(macroIndex);
+                editorForm.ShowDialog();
+            }
+
+            longPressButtonIndex = -1;
+        }
+
+        private void longPressTimer_Tick_1(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
