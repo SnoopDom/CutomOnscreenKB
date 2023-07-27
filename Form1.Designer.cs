@@ -100,6 +100,7 @@
             this.Controls.Add(this.btnUp);
             this.Controls.Add(this.btnDown);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
