@@ -36,7 +36,7 @@
             this.btnAddKeyPress = new System.Windows.Forms.Button();
             this.btnAddTextString = new System.Windows.Forms.Button();
             this.btnAddDelay = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnAutoClicker = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -118,15 +118,17 @@
             this.btnAddDelay.TabIndex = 7;
             this.btnAddDelay.Text = "Add Delay";
             this.btnAddDelay.UseVisualStyleBackColor = true;
+            this.btnAddDelay.Click += new System.EventHandler(this.btnAddDelay_Click);
             // 
-            // button4
+            // btnAutoClicker
             // 
-            this.button4.Location = new System.Drawing.Point(363, 152);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(95, 23);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "Auto Clicker";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnAutoClicker.Location = new System.Drawing.Point(363, 152);
+            this.btnAutoClicker.Name = "btnAutoClicker";
+            this.btnAutoClicker.Size = new System.Drawing.Size(95, 23);
+            this.btnAutoClicker.TabIndex = 8;
+            this.btnAutoClicker.Text = "Auto Clicker";
+            this.btnAutoClicker.UseVisualStyleBackColor = true;
+            this.btnAutoClicker.Click += new System.EventHandler(this.btnAutoClicker_Click);
             // 
             // button5
             // 
@@ -193,7 +195,7 @@
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnAutoClicker);
             this.Controls.Add(this.btnAddDelay);
             this.Controls.Add(this.btnAddTextString);
             this.Controls.Add(this.btnAddKeyPress);
@@ -221,7 +223,7 @@
         private System.Windows.Forms.Button btnAddKeyPress;
         private System.Windows.Forms.Button btnAddTextString;
         private System.Windows.Forms.Button btnAddDelay;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnAutoClicker;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;

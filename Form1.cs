@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -109,12 +110,52 @@ namespace CutomOnscreenKB
 
         private void SaveProfile(string fileName)
         {
-            // Your code to save the profile to a file goes here
+            try
+            {
+                List<string> macroNames = new List<string>();
+                foreach (Button macroButton in macroButtonsPanel.Controls)
+                {
+                    macroNames.Add(macroButton.Text);
+                }
+
+                // Write the macro names to a file (you can use any format you prefer, such as JSON or plain text)
+                File.WriteAllLines(fileName, macroNames);
+
+                MessageBox.Show("Profile saved successfully!", "Save Profile", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving profile: {ex.Message}", "Save Profile Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void LoadProfile(string fileName)
         {
-            // Your code to load the profile from a file goes here
+            try
+            {
+                List<string> macroNames = File.ReadAllLines(fileName).ToList();
+
+                if (macroNames.Count > 0)
+                {
+                    AddMacroButtons(macroNames.Count);
+
+                    // Update the macro buttons with the loaded macro names
+                    for (int i = 0; i < macroNames.Count; i++)
+                    {
+                        macroButtonsPanel.Controls[i].Text = macroNames[i];
+                    }
+
+                    MessageBox.Show("Profile loaded successfully!", "Load Profile", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("The profile file is empty.", "Load Profile", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading profile: {ex.Message}", "Load Profile Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void macroButtonsPanel_Paint(object sender, PaintEventArgs e)

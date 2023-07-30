@@ -45,69 +45,50 @@ namespace CutomOnscreenKB
             InitializeComponent();
         }
 
+        // Event handler for the Add Button button
+        private void btnAddButton_Click(object sender, EventArgs e)
+        {
+            // Get the button label from the txtBoxUserInput
+            string buttonLabel = txtBoxUserInput.Text;
+
+            // If the user entered a button label, create a visual representation in the macroFlowLayout
+            if (!string.IsNullOrEmpty(buttonLabel))
+            {
+                AddMacroItemToFlowLayout("Button", buttonLabel);
+            }
+        }
+
         // Event handler for the Add KeyPress button
         private void btnAddKeyPress_Click(object sender, EventArgs e)
         {
-            // Display a custom input dialog asking the user to press a key
-            string selectedKey = ShowKeyPressInputDialog();
+            // Get the key press from the txtBoxUserInput
+            string selectedKey = txtBoxUserInput.Text;
 
-            // If the user clicked OK and selected a key, create a visual representation in the macroFlowLayout
+            // If the user entered a key press, create a visual representation in the macroFlowLayout
             if (!string.IsNullOrEmpty(selectedKey))
             {
                 AddMacroItemToFlowLayout("KeyPress", selectedKey);
             }
         }
 
-        private string ShowKeyPressInputDialog()
-        {
-            // Create and show a custom input dialog
-            using (var inputDialog = new Form())
-            {
-                inputDialog.Text = "Press a Key";
-                inputDialog.FormBorderStyle = FormBorderStyle.FixedDialog;
-                inputDialog.StartPosition = FormStartPosition.CenterParent;
-                inputDialog.MinimizeBox = false;
-                inputDialog.MaximizeBox = false;
-
-                // Add a label to instruct the user
-                var label = new Label { Text = "Press a key on your keyboard:" };
-                label.Dock = DockStyle.Top;
-                inputDialog.Controls.Add(label);
-
-                // Add a text box to display the selected key
-                var textBox = new TextBox();
-                textBox.Dock = DockStyle.Top;
-                inputDialog.Controls.Add(textBox);
-
-                // Add an OK button to confirm the selection
-                var okButton = new Button { Text = "OK" };
-                okButton.Dock = DockStyle.Bottom;
-                okButton.Click += (sender, e) => inputDialog.Close();
-                inputDialog.Controls.Add(okButton);
-
-                // Set the form's AcceptButton property to the OK button, so pressing Enter will also close the dialog
-                inputDialog.AcceptButton = okButton;
-
-                // Show the input dialog as a modal dialog and return the selected key
-                return inputDialog.ShowDialog() == DialogResult.OK ? textBox.Text : null;
-            }
-        }
-
         // Event handler for the Add TextString button
         private void btnAddTextString_Click(object sender, EventArgs e)
         {
-            // Retrieve the user input from the "txtBoxUserInput" textbox
+            // Get the text string from the txtBoxUserInput
             string userInput = txtBoxUserInput.Text;
 
-            // Create a visual representation in the macroFlowLayout using a label
-            AddMacroItemToFlowLayout("TextString", userInput);
+            // If the user entered a text string, create a visual representation in the macroFlowLayout
+            if (!string.IsNullOrEmpty(userInput))
+            {
+                AddMacroItemToFlowLayout("TextString", userInput);
+            }
         }
 
         private void AddMacroItemToFlowLayout(string itemType, string content)
         {
             // Create a custom button to represent the macro item
             var btnMacroItem = new Button();
-            btnMacroItem.Text = itemType == "KeyPress" ? $"KeyPress: {content}" : $"Text: {content}";
+            btnMacroItem.Text = itemType == "KeyPress" ? $"KeyPress: {content}" : (itemType == "TextString" ? $"Text: {content}" : content);
             btnMacroItem.AutoSize = true;
             btnMacroItem.FlatStyle = FlatStyle.Flat;
             btnMacroItem.BackColor = Color.FromArgb(70, 130, 180); // Customize the button appearance
@@ -123,8 +104,34 @@ namespace CutomOnscreenKB
             // Attach a click event handler to the button to allow users to edit or delete the macro item
             btnMacroItem.Click += BtnMacroItem_Click;
 
+            // Enable drag and drop for the button
+            btnMacroItem.MouseDown += BtnMacroItem_MouseDown;
+
             // Add the button to the macroFlowLayout
             macroFlowLayout.Controls.Add(btnMacroItem);
+        }
+
+        private void BtnMacroItem_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ((Button)sender).DoDragDrop(sender, DragDropEffects.Move);
+            }
+        }
+
+        private void macroFlowLayout_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Button)))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+        }
+
+        private void macroFlowLayout_DragDrop(object sender, DragEventArgs e)
+        {
+            Button draggedButton = (Button)e.Data.GetData(typeof(Button));
+            int newIndex = macroFlowLayout.Controls.GetChildIndex(macroFlowLayout.GetChildAtPoint(macroFlowLayout.PointToClient(new Point(e.X, e.Y))));
+            macroFlowLayout.Controls.SetChildIndex(draggedButton, newIndex);
         }
 
         private void BtnMacroItem_Click(object sender, EventArgs e)
@@ -170,6 +177,96 @@ namespace CutomOnscreenKB
         {
 
         }
+
+        private void btnAutoClicker_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Event handler for the Add Delay button
+        private void btnAddDelay_Click(object sender, EventArgs e)
+        {
+            // Get the delay time from the txtBoxUserInput
+            if (int.TryParse(txtBoxUserInput.Text, out int delayTime) && delayTime > 0)
+            {
+                // If the user entered a valid delay time, create a visual representation in the macroFlowLayout
+                AddMacroItemToFlowLayout("Delay", delayTime.ToString());
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid delay time (a positive integer).", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private int ShowDelayInputDialog()
+        {
+            // Create and show a custom input dialog
+            using (var inputDialog = new Form())
+            {
+                inputDialog.Text = "Enter Delay (in milliseconds)";
+                inputDialog.FormBorderStyle = FormBorderStyle.FixedDialog;
+                inputDialog.StartPosition = FormStartPosition.CenterParent;
+                inputDialog.MinimizeBox = false;
+                inputDialog.MaximizeBox = false;
+
+                // Add a label to instruct the user
+                var label = new Label { Text = "Enter the delay time (in milliseconds):" };
+                label.Dock = DockStyle.Top;
+                inputDialog.Controls.Add(label);
+
+                // Add a numeric up-down control to input the delay time
+                var numericUpDown = new NumericUpDown { Dock = DockStyle.Top, Minimum = 1 };
+                inputDialog.Controls.Add(numericUpDown);
+
+                // Add an OK button to confirm the delay input
+                var okButton = new Button { Text = "OK" };
+                okButton.Dock = DockStyle.Bottom;
+                okButton.Click += (sender, e) => inputDialog.Close();
+                inputDialog.Controls.Add(okButton);
+
+                // Set the form's AcceptButton property to the OK button, so pressing Enter will also close the dialog
+                inputDialog.AcceptButton = okButton;
+
+                // Show the input dialog as a modal dialog and return the entered delay time
+                return inputDialog.ShowDialog() == DialogResult.OK ? (int)numericUpDown.Value : 0;
+            }
+        }
+
+
+        private string ShowButtonInputDialog()
+        {
+            // Create and show a custom input dialog
+            using (var inputDialog = new Form())
+            {
+                inputDialog.Text = "Enter Button Label";
+                inputDialog.FormBorderStyle = FormBorderStyle.FixedDialog;
+                inputDialog.StartPosition = FormStartPosition.CenterParent;
+                inputDialog.MinimizeBox = false;
+                inputDialog.MaximizeBox = false;
+
+                // Add a label to instruct the user
+                var label = new Label { Text = "Enter the button label:" };
+                label.Dock = DockStyle.Top;
+                inputDialog.Controls.Add(label);
+
+                // Add a text box to input the button label
+                var textBox = new TextBox { Dock = DockStyle.Top };
+                inputDialog.Controls.Add(textBox);
+
+                // Add an OK button to confirm the button label input
+                var okButton = new Button { Text = "OK" };
+                okButton.Dock = DockStyle.Bottom;
+                okButton.Click += (sender, e) => inputDialog.Close();
+                inputDialog.Controls.Add(okButton);
+
+                // Set the form's AcceptButton property to the OK button, so pressing Enter will also close the dialog
+                inputDialog.AcceptButton = okButton;
+
+                // Show the input dialog as a modal dialog and return the entered button label
+                return inputDialog.ShowDialog() == DialogResult.OK ? textBox.Text : null;
+            }
+        }
+
     }
 }
 
