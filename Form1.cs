@@ -33,19 +33,31 @@ namespace CutomOnscreenKB
 
         private void AddMacroButtons(int count)
         {
-            // Clear any existing buttons from the macroButtonsPanel
-            macroButtonsPanel.Controls.Clear();
+            int existingMacroCount = macroButtonsPanel.Controls.Count;
+            int delta = count - existingMacroCount;
 
-            // Add the specified number of buttons (macro buttons) to the macroButtonsPanel
-            for (int i = 0; i < count; i++)
+            if (delta > 0)
             {
-                Button macroButton = new Button();
-                macroButton.Text = "Macro " + (i + 1);
-                macroButton.Tag = i; // Store the macro index in the Tag property for later reference
-                macroButton.Click += MacroButton_Click; // Attach the click event handler
-                macroButton.MouseDown += MacroButton_MouseDown; // Attach the MouseDown event handler
-                macroButton.MouseUp += MacroButton_MouseUp; // Attach the MouseUp event handler
-                macroButtonsPanel.Controls.Add(macroButton);
+                // Add the specified number of buttons (macro buttons) to the macroButtonsPanel
+                for (int i = 0; i < delta; i++)
+                {
+                    Button macroButton = new Button();
+                    macroButton.Text = "Macro " + (existingMacroCount + i + 1);
+                    macroButton.Tag = existingMacroCount + i; // Store the macro index in the Tag property for later reference
+                    macroButton.Click += MacroButton_Click; // Attach the click event handler
+                    macroButton.MouseDown += MacroButton_MouseDown; // Attach the MouseDown event handler
+                    macroButton.MouseUp += MacroButton_MouseUp; // Attach the MouseUp event handler
+                    macroButtonsPanel.Controls.Add(macroButton);
+                }
+            }
+            else if (delta < 0)
+            {
+                // Remove excess buttons
+                for (int i = 0; i < -delta; i++)
+                {
+                    int indexToRemove = macroButtonsPanel.Controls.Count - 1;
+                    macroButtonsPanel.Controls.RemoveAt(indexToRemove);
+                }
             }
         }
 
@@ -148,7 +160,12 @@ namespace CutomOnscreenKB
                 int macroIndex = longPressButtonIndex;
                 MacroEditorForm editorForm = new MacroEditorForm();
                 editorForm.MacroName = macroButtonsPanel.Controls[macroIndex].Text;
-                editorForm.ShowDialog();
+
+                if (editorForm.ShowDialog() == DialogResult.OK)
+                {
+                    // If the MacroEditorForm is closed with OK result, update the button text
+                    macroButtonsPanel.Controls[macroIndex].Text = editorForm.UpdatedMacroName; // Use UpdatedMacroName property
+                }
             }
 
             longPressButtonIndex = -1;

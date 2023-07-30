@@ -15,7 +15,10 @@ namespace CutomOnscreenKB
         private List<MacroItem> macroItems = new List<MacroItem>();
         private string macroName;
 
+        // Property to store the updated macro name
+        public string UpdatedMacroName { get; private set; }
         // Custom class to represent the macro sequence
+
         private class MacroItem
         {
             public string Type { get; set; } // "KeyPress" or "TextString"
@@ -147,10 +150,11 @@ namespace CutomOnscreenKB
 
         // Implement the btnSave_Click and btnCancel_Click as described in the previous steps.
 
+        // Event handler for the Save button
         private void btnSave_Click_1(object sender, EventArgs e)
         {
             // Save the entered macro name to the public property
-            MacroName = txtBoxMacroName.Text;
+            UpdatedMacroName = txtBoxMacroName.Text;
 
             // Set the DialogResult to OK to indicate that the form was closed with Save
             DialogResult = DialogResult.OK;

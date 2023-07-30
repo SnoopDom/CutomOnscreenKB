@@ -49,7 +49,7 @@
             // 
             this.txtBoxMacroName.Location = new System.Drawing.Point(12, 12);
             this.txtBoxMacroName.Name = "txtBoxMacroName";
-            this.txtBoxMacroName.Size = new System.Drawing.Size(346, 20);
+            this.txtBoxMacroName.Size = new System.Drawing.Size(446, 20);
             this.txtBoxMacroName.TabIndex = 0;
             this.txtBoxMacroName.Text = "Choose macro name";
             this.txtBoxMacroName.TextChanged += new System.EventHandler(this.txtBoxMacroName_TextChanged);
@@ -59,7 +59,7 @@
             this.txtBoxUserInput.Location = new System.Drawing.Point(12, 38);
             this.txtBoxUserInput.Name = "txtBoxUserInput";
             this.txtBoxUserInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtBoxUserInput.Size = new System.Drawing.Size(346, 20);
+            this.txtBoxUserInput.Size = new System.Drawing.Size(446, 20);
             this.txtBoxUserInput.TabIndex = 1;
             this.txtBoxUserInput.Text = "Input Text";
             // 
@@ -67,7 +67,7 @@
             // 
             this.btnSave.Location = new System.Drawing.Point(12, 354);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(170, 23);
+            this.btnSave.Size = new System.Drawing.Size(220, 23);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -75,9 +75,9 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(188, 354);
+            this.btnCancel.Location = new System.Drawing.Point(238, 354);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(170, 23);
+            this.btnCancel.Size = new System.Drawing.Size(220, 23);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -92,7 +92,7 @@
             // 
             // btnAddKeyPress
             // 
-            this.btnAddKeyPress.Location = new System.Drawing.Point(364, 64);
+            this.btnAddKeyPress.Location = new System.Drawing.Point(363, 65);
             this.btnAddKeyPress.Name = "btnAddKeyPress";
             this.btnAddKeyPress.Size = new System.Drawing.Size(95, 23);
             this.btnAddKeyPress.TabIndex = 5;
@@ -102,7 +102,7 @@
             // 
             // btnAddTextString
             // 
-            this.btnAddTextString.Location = new System.Drawing.Point(364, 93);
+            this.btnAddTextString.Location = new System.Drawing.Point(363, 94);
             this.btnAddTextString.Name = "btnAddTextString";
             this.btnAddTextString.Size = new System.Drawing.Size(95, 23);
             this.btnAddTextString.TabIndex = 6;
@@ -112,7 +112,7 @@
             // 
             // btnAddDelay
             // 
-            this.btnAddDelay.Location = new System.Drawing.Point(364, 122);
+            this.btnAddDelay.Location = new System.Drawing.Point(363, 123);
             this.btnAddDelay.Name = "btnAddDelay";
             this.btnAddDelay.Size = new System.Drawing.Size(95, 23);
             this.btnAddDelay.TabIndex = 7;
@@ -121,16 +121,16 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(364, 151);
+            this.button4.Location = new System.Drawing.Point(363, 152);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(95, 23);
             this.button4.TabIndex = 8;
-            this.button4.Text = "button4";
+            this.button4.Text = "Auto Clicker";
             this.button4.UseVisualStyleBackColor = true;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(364, 180);
+            this.button5.Location = new System.Drawing.Point(363, 181);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(95, 23);
             this.button5.TabIndex = 9;
@@ -139,7 +139,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(364, 209);
+            this.button6.Location = new System.Drawing.Point(363, 210);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(95, 23);
             this.button6.TabIndex = 10;
@@ -148,7 +148,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(364, 238);
+            this.button7.Location = new System.Drawing.Point(363, 239);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(95, 23);
             this.button7.TabIndex = 11;
@@ -157,7 +157,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(364, 267);
+            this.button8.Location = new System.Drawing.Point(363, 268);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(95, 23);
             this.button8.TabIndex = 12;
@@ -166,7 +166,7 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(364, 296);
+            this.button9.Location = new System.Drawing.Point(363, 297);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(95, 23);
             this.button9.TabIndex = 13;
@@ -175,7 +175,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(364, 325);
+            this.button10.Location = new System.Drawing.Point(363, 326);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(95, 23);
             this.button10.TabIndex = 14;
@@ -186,7 +186,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 392);
+            this.ClientSize = new System.Drawing.Size(470, 392);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
