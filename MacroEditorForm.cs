@@ -13,6 +13,7 @@ namespace CutomOnscreenKB
     public partial class MacroEditorForm : Form
     {
         private List<MacroItem> macroItems = new List<MacroItem>();
+        private string macroName;
 
         // Custom class to represent the macro sequence
         private class MacroItem
@@ -20,12 +21,25 @@ namespace CutomOnscreenKB
             public string Type { get; set; } // "KeyPress" or "TextString"
             public string Content { get; set; } // Stores the keypress or text string
         }
-
+        // Property to set/get the macro name
+        public string MacroName 
+        {
+            get { return macroName; }
+            set
+            {
+                macroName = value;
+                txtBoxMacroName.Text = macroName;
+            }
+        }
         public MacroEditorForm(int macroIndex)
         {
             InitializeComponent();
             // Set the title of the form based on the macro index (e.g., "Macro 1")
             this.Text = "Macro " + (macroIndex + 1);
+        }
+        public MacroEditorForm()
+        {
+            InitializeComponent();
         }
 
         // Event handler for the Add KeyPress button
@@ -133,6 +147,25 @@ namespace CutomOnscreenKB
 
         // Implement the btnSave_Click and btnCancel_Click as described in the previous steps.
 
+        private void btnSave_Click_1(object sender, EventArgs e)
+        {
+            // Save the entered macro name to the public property
+            MacroName = txtBoxMacroName.Text;
+
+            // Set the DialogResult to OK to indicate that the form was closed with Save
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBoxMacroName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

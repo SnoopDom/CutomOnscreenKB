@@ -52,6 +52,7 @@
             this.txtBoxMacroName.Size = new System.Drawing.Size(346, 20);
             this.txtBoxMacroName.TabIndex = 0;
             this.txtBoxMacroName.Text = "Choose macro name";
+            this.txtBoxMacroName.TextChanged += new System.EventHandler(this.txtBoxMacroName_TextChanged);
             // 
             // txtBoxUserInput
             // 
@@ -70,6 +71,7 @@
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click_1);
             // 
             // btnCancel
             // 
@@ -79,6 +81,7 @@
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // macroFlowLayout
             // 
@@ -183,7 +186,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 392);
+            this.ClientSize = new System.Drawing.Size(475, 392);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
@@ -199,6 +202,8 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtBoxUserInput);
             this.Controls.Add(this.txtBoxMacroName);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MacroEditorForm";
             this.Text = "Form2";
             this.ResumeLayout(false);

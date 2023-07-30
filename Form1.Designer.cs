@@ -65,7 +65,7 @@
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click_1);
             // 
             // btnLoad
             // 
@@ -76,10 +76,7 @@
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-            // 
-            // longPressTimer
-            // 
-            this.longPressTimer.Tick += new System.EventHandler(this.longPressTimer_Tick_1);
+
             // 
             // macroButtonsPanel
             // 

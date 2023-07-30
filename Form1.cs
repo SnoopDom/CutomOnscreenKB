@@ -8,25 +8,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace CutomOnscreenKB
 {
     public partial class Form1 : Form
     {
         private int longPressButtonIndex = -1;
+        private DateTime mouseDownTime; // Store the time when MouseDown event occurs
 
         public Form1()
         {
             InitializeComponent();
 
             longPressTimer.Interval = 1000; // 1 second for long press
-            longPressTimer.Tick += LongPressTimer_Tick;
+            longPressTimer.Tick += LongPressTimer_Tick; // Subscribe to the Tick event
         }
+
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
             int initialMacroCount = 5;
             AddMacroButtons(initialMacroCount);
-
         }
 
         private void AddMacroButtons(int count)
@@ -50,11 +52,9 @@ namespace CutomOnscreenKB
         // Event handler for the macro buttons' Click event
         private void MacroButton_Click(object sender, EventArgs e)
         {
-            // This event will only handle single-click action, not long-press
-            Button clickedButton = (Button)sender;
-            int macroIndex = (int)clickedButton.Tag;
-            // Handle the single-click action here (if needed)
+            
         }
+
 
         private void btnDown_Click(object sender, EventArgs e)
         {
@@ -73,7 +73,7 @@ namespace CutomOnscreenKB
         }
 
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnSave_Click_1(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Profile Files (*.profile)|*.profile|All Files (*.*)|*.*";
@@ -112,13 +112,31 @@ namespace CutomOnscreenKB
         private void MacroButton_MouseDown(object sender, MouseEventArgs e)
         {
             longPressButtonIndex = (int)((Button)sender).Tag;
+            mouseDownTime = DateTime.Now; // Store the current time on MouseDown
+
+            // Start the long press timer on MouseDown
             longPressTimer.Start();
         }
 
         private void MacroButton_MouseUp(object sender, MouseEventArgs e)
         {
-            longPressTimer.Stop();
+            longPressTimer.Stop(); // Stop the timer on MouseUp
+
+            // Calculate the duration of the press
+            TimeSpan pressDuration = DateTime.Now - mouseDownTime;
             longPressButtonIndex = -1;
+
+            // Determine if it's a long-press or single-click based on the press duration
+            if (pressDuration.TotalMilliseconds >= 1000) // 1000 milliseconds for 1 second long-press
+            {
+                LongPressTimer_Tick(null, EventArgs.Empty); // Call the tick event manually
+            }
+            else
+            {
+                // It's a short press, perform the action
+                int macroIndex = (int)((Button)sender).Tag;
+                MessageBox.Show($"Perform Action: {macroButtonsPanel.Controls[macroIndex].Text}");
+            }
         }
 
         private void LongPressTimer_Tick(object sender, EventArgs e)
@@ -128,18 +146,12 @@ namespace CutomOnscreenKB
             if (longPressButtonIndex >= 0 && longPressButtonIndex < macroButtonsPanel.Controls.Count)
             {
                 int macroIndex = longPressButtonIndex;
-                MacroEditorForm editorForm = new MacroEditorForm(macroIndex);
+                MacroEditorForm editorForm = new MacroEditorForm();
+                editorForm.MacroName = macroButtonsPanel.Controls[macroIndex].Text;
                 editorForm.ShowDialog();
             }
 
             longPressButtonIndex = -1;
         }
-
-        private void longPressTimer_Tick_1(object sender, EventArgs e)
-        {
-
-        }
-
-        
     }
 }
