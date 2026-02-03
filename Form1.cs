@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
+
 namespace CutomOnscreenKB
 {
     public partial class Form1 : Form
     {
         private int longPressButtonIndex = -1;
         private DateTime mouseDownTime; // Store the time when MouseDown event occurs
+        private Dictionary<int, Macro> macros = new Dictionary<int, Macro>();
 
         public Form1()
         {
@@ -39,33 +41,41 @@ namespace CutomOnscreenKB
 
             if (delta > 0)
             {
-                // Add the specified number of buttons (macro buttons) to the macroButtonsPanel
                 for (int i = 0; i < delta; i++)
                 {
                     Button macroButton = new Button();
                     macroButton.Text = "Macro " + (existingMacroCount + i + 1);
-                    macroButton.Tag = existingMacroCount + i; // Store the macro index in the Tag property for later reference
-                    macroButton.Click += MacroButton_Click; // Attach the click event handler
-                    macroButton.MouseDown += MacroButton_MouseDown; // Attach the MouseDown event handler
-                    macroButton.MouseUp += MacroButton_MouseUp; // Attach the MouseUp event handler
+                    macroButton.MouseDown += MacroButton_MouseDown;
+                    macroButton.MouseUp += MacroButton_MouseUp;
                     macroButtonsPanel.Controls.Add(macroButton);
                 }
             }
             else if (delta < 0)
             {
-                // Remove excess buttons
                 for (int i = 0; i < -delta; i++)
                 {
                     int indexToRemove = macroButtonsPanel.Controls.Count - 1;
+
+                    // Remove stored macro if it exists
+                    if (macros.ContainsKey(indexToRemove))
+                    {
+                        macros.Remove(indexToRemove);
+                    }
+
                     macroButtonsPanel.Controls.RemoveAt(indexToRemove);
                 }
             }
-        }
 
-        // Event handler for the macro buttons' Click event
-        private void MacroButton_Click(object sender, EventArgs e)
-        {
-            
+            // Reindex buttons and clean macro dictionary
+            for (int i = 0; i < macroButtonsPanel.Controls.Count; i++)
+            {
+                Button btn = (Button)macroButtonsPanel.Controls[i];
+                btn.Tag = i;
+            }
+
+            macros = macros
+                .Where(kv => kv.Key < macroButtonsPanel.Controls.Count)
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
 
@@ -188,7 +198,17 @@ namespace CutomOnscreenKB
             {
                 // It's a short press, perform the action
                 int macroIndex = (int)((Button)sender).Tag;
-                MessageBox.Show($"Perform Action: {macroButtonsPanel.Controls[macroIndex].Text}");
+                if (macros.TryGetValue(macroIndex, out Macro macro))
+                {
+                    MessageBox.Show("Click OK, then click into Notepad and watch the macro run");
+
+                    ExecuteMacro(macro);
+                }
+                else
+                {
+                    MessageBox.Show("No macro assigned to this button.");
+                }
+
             }
         }
 
@@ -200,16 +220,55 @@ namespace CutomOnscreenKB
             {
                 int macroIndex = longPressButtonIndex;
                 MacroEditorForm editorForm = new MacroEditorForm();
-                editorForm.MacroName = macroButtonsPanel.Controls[macroIndex].Text;
+
+                if (macros.TryGetValue(macroIndex, out Macro existingMacro))
+                {
+                    editorForm.LoadMacro(existingMacro);
+                }
+                else
+                {
+                    editorForm.MacroName = macroButtonsPanel.Controls[macroIndex].Text;
+                }
+
 
                 if (editorForm.ShowDialog() == DialogResult.OK)
                 {
-                    // If the MacroEditorForm is closed with OK result, update the button text
-                    macroButtonsPanel.Controls[macroIndex].Text = editorForm.UpdatedMacroName; // Use UpdatedMacroName property
+                    Button btn = (Button)macroButtonsPanel.Controls[macroIndex];
+
+                    btn.Text = editorForm.CreatedMacro.Name;
+
+                    macros[macroIndex] = editorForm.CreatedMacro;
                 }
             }
 
             longPressButtonIndex = -1;
         }
+
+
+        private void ExecuteMacro(Macro macro)
+        {
+            foreach (var step in macro.Steps)
+            {
+                switch (step.Type)
+                {
+                    case "KeyPress":
+                        SendKeys.SendWait(step.Content);
+                        break;
+
+                    case "TextString":
+                        SendKeys.SendWait(step.Content);
+                        break;
+
+                    case "Delay":
+                        if (int.TryParse(step.Content, out int delay))
+                        {
+                            System.Threading.Thread.Sleep(delay);
+                        }
+                        break;
+                }
+            }
+        }
+
+
     }
 }

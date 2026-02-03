@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CutomOnscreenKB;
 
 namespace CutomOnscreenKB
 {
@@ -18,6 +19,8 @@ namespace CutomOnscreenKB
         // Property to store the updated macro name
         public string UpdatedMacroName { get; private set; }
         // Custom class to represent the macro sequence
+        public Macro CreatedMacro { get; private set; }
+
 
         private class MacroItem
         {
@@ -160,13 +163,27 @@ namespace CutomOnscreenKB
         // Event handler for the Save button
         private void btnSave_Click_1(object sender, EventArgs e)
         {
-            // Save the entered macro name to the public property
-            UpdatedMacroName = txtBoxMacroName.Text;
+            CreatedMacro = new Macro
+            {
+                Name = txtBoxMacroName.Text
+            };
 
-            // Set the DialogResult to OK to indicate that the form was closed with Save
+            foreach (Control control in macroFlowLayout.Controls)
+            {
+                if (control is Button btn && btn.Tag is MacroItem item)
+                {
+                    CreatedMacro.Steps.Add(new MacroStep
+                    {
+                        Type = item.Type,
+                        Content = item.Content
+                    });
+                }
+            }
+
             DialogResult = DialogResult.OK;
             Close();
         }
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -231,6 +248,17 @@ namespace CutomOnscreenKB
                 return inputDialog.ShowDialog() == DialogResult.OK ? (int)numericUpDown.Value : 0;
             }
         }
+        public void LoadMacro(Macro macro)
+        {
+            txtBoxMacroName.Text = macro.Name;
+            macroFlowLayout.Controls.Clear();
+
+            foreach (var step in macro.Steps)
+            {
+                AddMacroItemToFlowLayout(step.Type, step.Content);
+            }
+        }
+
 
 
         private string ShowButtonInputDialog()
